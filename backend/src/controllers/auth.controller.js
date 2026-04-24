@@ -32,8 +32,8 @@ const signUp = async (req, res) => {
     });
 
     if (newUser) {
-      generateTokenAndSetCookie(newUser._id, res);
       await newUser.save();
+      generateTokenAndSetCookie(newUser._id, res);
 
       return res.status(201).json({
         _id: newUser._id,

@@ -16,7 +16,12 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.listen(PORT, () => {
-  connectDB();
-  console.log(`Server running at  http://localhost:${PORT}`);
-});
+connectDB()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server running at  http://localhost:${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.log("Error connecting to MongoDB:", error);
+  });
