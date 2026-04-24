@@ -2,6 +2,7 @@ import express from "express";
 import "dotenv/config";
 import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/messages.route.js";
+import connectDB from "./config/db.js";
 
 const app = express();
 const PORT = process.env.PORT;
@@ -15,6 +16,12 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running at  http://localhost:${PORT}`);
-});
+connectDB()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server running at  http://localhost:${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.log("Error connecting to MongoDB:", error);
+  });
