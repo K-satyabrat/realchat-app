@@ -38,7 +38,6 @@ const signUp = async (req, res) => {
 
     generateTokenAndSetCookie(newUser._id, res);
 
-    // Send response first
     res.status(201).json({
       _id: newUser._id,
       fullname: newUser.fullname,
@@ -47,7 +46,6 @@ const signUp = async (req, res) => {
       message: "User created successfully",
     });
 
-    // Send email async (non-blocking)
     sendWelcomeEmail(
       newUser.email,
       newUser.fullname,
@@ -59,4 +57,51 @@ const signUp = async (req, res) => {
   }
 };
 
-export default { signUp };
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({ message: "Invalid email format" });
+  }
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    generateTokenAndSetCookie(user._id, res);
+
+    res.status(200).json({
+      _id: user._id,
+      fullname: user.fullname,
+      email: user.email,
+      profilePic: user.profilePic,
+      message: "User logged in successfully",
+    });
+  } catch (error) {
+    console.error("Login error:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+const logout = async (_, res) => {
+  try {
+    res.clearCookie("jwt");
+    return res.status(200).json({ message: "User logged out successfully" });
+  } catch (error) {
+    console.error("Logout error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export default { signUp, login, logout };
