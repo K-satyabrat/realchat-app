@@ -2,8 +2,7 @@ import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import generateTokenAndSetCookie from "../lib/generateToken.js";
 import { sendWelcomeEmail } from "../emails/emailHandler.js";
-import dotenv from "dotenv";
-dotenv.config();
+import cloudinary from "../lib/cloudinary.js";
 
 const signUp = async (req, res) => {
   const { fullname, email, password } = req.body;
@@ -104,4 +103,41 @@ const logout = async (_, res) => {
   }
 };
 
-export default { signUp, login, logout };
+const updateProfile = async (req, res) => {
+  try {
+    const { profilePic } = req.body;
+    if (!profilePic) {
+      return res
+        .status(400)
+        .json({ message: "Please provide a profile picture" });
+    }
+    const userId = req.user._id;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const result = await cloudinary.uploader.upload(profilePic, {
+      folder: "real-chat",
+    });
+    if (!result) {
+      return res
+        .status(500)
+        .json({ message: "Failed to upload profile picture" });
+    }
+    await User.findByIdAndUpdate(
+      userId,
+      { profilePic: result.secure_url },
+      { new: true },
+    );
+    return res
+      .status(200)
+      .json({ message: "Profile picture updated successfully" });
+  } catch (error) {
+    console.error("Update profile error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export default { signUp, login, logout, updateProfile };
