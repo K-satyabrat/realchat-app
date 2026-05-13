@@ -6,6 +6,7 @@ import cloudinary from "../lib/cloudinary.js";
 
 const signUp = async (req, res) => {
   const { fullName, email, password } = req.body;
+  console.log("req.body received:", req.body);
 
   try {
     if (!fullName || !email || !password) {
@@ -47,7 +48,7 @@ const signUp = async (req, res) => {
 
     sendWelcomeEmail(
       newUser.email,
-      newUser.fullname,
+      newUser.fullName,
       process.env.CLIENT_URL,
     ).catch((err) => console.error("Email error:", err));
   } catch (error) {
@@ -82,7 +83,7 @@ const login = async (req, res) => {
 
     res.status(200).json({
       _id: user._id,
-      fullname: user.fullname,
+      fullName: user.fullName,
       email: user.email,
       profilePic: user.profilePic,
       message: "User logged in successfully",

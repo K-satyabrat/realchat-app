@@ -22,7 +22,6 @@ const SignUpPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await signUp(formData);
-    setFormData({ fullName: "", email: "", password: "" });
   };
 
   return (
@@ -75,7 +74,7 @@ const SignUpPage = () => {
                       <Mail className="auth-input-icon" />
 
                       <input
-                        type="text"
+                        type="email"
                         value={formData.email}
                         onChange={(e) =>
                           setFormData({
@@ -95,7 +94,7 @@ const SignUpPage = () => {
                       <Key className="auth-input-icon" />
 
                       <input
-                        type="text"
+                        type="password"
                         value={formData.password}
                         onChange={(e) =>
                           setFormData({
