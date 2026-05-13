@@ -1,7 +1,6 @@
 import express from "express";
 import authController from "../controllers/auth.controller.js";
 import { protectRoute } from "../middlewares/auth.middleware.js";
-import arcjetProtectApi from "../middlewares/arcjet.middleware.js";
 
 const router = express.Router();
 
