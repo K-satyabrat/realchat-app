@@ -5,10 +5,10 @@ import { sendWelcomeEmail } from "../emails/emailHandler.js";
 import cloudinary from "../lib/cloudinary.js";
 
 const signUp = async (req, res) => {
-  const { fullname, email, password } = req.body;
+  const { fullName, email, password } = req.body;
 
   try {
-    if (!fullname || !email || !password) {
+    if (!fullName || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -30,7 +30,7 @@ const signUp = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await User.create({
-      fullname,
+      fullName,
       email,
       password: hashedPassword,
     });
@@ -39,7 +39,7 @@ const signUp = async (req, res) => {
 
     res.status(201).json({
       _id: newUser._id,
-      fullname: newUser.fullname,
+      fullName: newUser.fullName,
       email: newUser.email,
       profilePic: newUser.profilePic,
       message: "User created successfully",
