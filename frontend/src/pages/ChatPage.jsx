@@ -1,14 +1,14 @@
 import BorderAnimatedContainer from "../components/BorderAnimatedContainer";
-import useAuthStore from "../store/useAuthStore";
 import ProfileHeader from "../components/ProfileHeader";
 import ActiveTabSwitch from "../components/ActiveTabSwitch";
 import { ChatList } from "../components/ChatList";
-import { ContactList } from "../components/ContactList";
+import ContactList from "../components/ContactList";
 import NoConversationPlaceholder from "../components/NoConversationPlaceholder";
 import ChatContainer from "../components/ChatContainer";
+import { useChatStore } from "../store/useChatStore";
 
 const ChatPage = () => {
-  const { logout, activeTab, selectedUser } = useAuthStore();
+  const { selectedUser, activeTab } = useChatStore();
   return (
     <div className="relative w-full max-w-6xl flex h-[800px] ">
       <BorderAnimatedContainer>
