@@ -7,6 +7,8 @@ const useAuthStore = create((set) => ({
   isCheckingAuth: true,
   isSignUp: false,
   isLogin: false,
+  onlineUsers: [],
+  socket: null,
 
   checkAuth: async () => {
     try {
@@ -51,6 +53,18 @@ const useAuthStore = create((set) => ({
       await axiosInstance.post("/auth/logout");
       set({ authUser: null });
       toast.success("Logout successfully");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  },
+
+  updateProfile: async (profilePic) => {
+    try {
+      const response = await axiosInstance.put("/auth/updateProfile", {
+        profilePic,
+      });
+      set({ authUser: response.data });
+      toast.success("Profile updated successfully");
     } catch (error) {
       toast.error(error.response.data.message);
     }

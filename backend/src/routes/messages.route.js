@@ -11,7 +11,7 @@ const router = express.Router();
 router.use(protectRoute);
 
 router.get("/contacts", getAllContacts);
-router.get("/chat", chatParterns);
+router.get("/chats", chatParterns);
 router.get("/:id", getMessagesByUserId);
 router.post("/send/:id", sendMessage);
 
