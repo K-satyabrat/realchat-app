@@ -5,13 +5,13 @@ import cors from "cors";
 import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/messages.route.js";
 import connectDB from "./config/db.js";
+import { server, app } from "./lib/socket.js";
 
-const app = express();
 const PORT = process.env.PORT;
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_URL,
     credentials: true,
   }),
 );
@@ -27,12 +27,7 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-connectDB()
-  .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Server running at  http://localhost:${PORT}`);
-    });
-  })
-  .catch((error) => {
-    console.log("Error connecting to MongoDB:", error);
-  });
+connectDB();
+server.listen(PORT, () => {
+  console.log(`Server running at  http://localhost:${PORT}`);
+});
