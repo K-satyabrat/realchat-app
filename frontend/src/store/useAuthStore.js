@@ -50,7 +50,7 @@ const useAuthStore = create((set, get) => ({
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
-      set({ isSignUp: false });
+      set({ isLogin: false });
     }
   },
 

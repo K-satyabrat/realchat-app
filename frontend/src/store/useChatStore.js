@@ -20,12 +20,28 @@ export const useChatStore = create((set, get) => ({
 
   setActiveTab: (tab) => set({ activeTab: tab }),
   setSelectedUser: (selectedUser) => set({ selectedUser }),
+  removeContact: (contactId) => {
+    const hiddenContacts = JSON.parse(
+      localStorage.getItem("hiddenContacts") || "[]",
+    );
+    if (!hiddenContacts.includes(contactId)) {
+      hiddenContacts.push(contactId);
+      localStorage.setItem("hiddenContacts", JSON.stringify(hiddenContacts));
+    }
+    set({ allContacts: get().allContacts.filter((c) => c._id !== contactId) });
+  },
 
   getAllContacts: async () => {
     set({ isUsersLoading: true });
     try {
       const res = await axiosInstance.get("/messages/contacts");
-      set({ allContacts: res.data });
+      const hiddenContacts = JSON.parse(
+        localStorage.getItem("hiddenContacts") || "[]",
+      );
+      const visibleContacts = res.data.filter(
+        (c) => !hiddenContacts.includes(c._id),
+      );
+      set({ allContacts: visibleContacts });
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
