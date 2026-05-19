@@ -7,11 +7,12 @@ import messageRoutes from "./routes/messages.route.js";
 import connectDB from "./config/db.js";
 import { server, app } from "./lib/socket.js";
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8000;
 
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   }),
 );
