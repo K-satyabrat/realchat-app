@@ -18,7 +18,7 @@ A full-stack, real-time messaging application built with the MERN stack (MongoDB
 ## Tech Stack
 
 ### Frontend
-- **React.js** (bootstrapped with Vite)
+- **React.js** 
 - **TailwindCSS** for styling
 - **Zustand** for global state management
 - **Socket.IO-client** for WebSocket connections
