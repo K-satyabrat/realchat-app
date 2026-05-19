@@ -2,6 +2,9 @@
 
 A full-stack, real-time messaging application built with the MERN stack (MongoDB, Express, React, Node.js) and Socket.IO.
 
+## Live Demo
+🌐 **Frontend URL:** [https://realchat-app-frontend.onrender.com/](https://realchat-app-frontend.onrender.com/)
+
 ## Features
 - **Real-Time Messaging**: Send and receive messages instantly using Socket.IO.
 - **User Authentication**: Secure signup, login, and logout flow using JWT stored in HTTP-only cookies.
